@@ -44,10 +44,10 @@ The easiest way is to simply click the Python scripts. They all have different u
 * generate_pcm_from_wav.py: asks for a wav file (or folder) and will transform it to a 16bit 44.1KHz wav, convert it to a pcm and then normalize it
 
 To get the game id from smashcustommusic.net, take the number at the end of the URL of a game.  
-For example, the URL for Zelda ALTTP is https://smashcustommusic.net/game/95 so the game ID is 95
+For example, the URL for Zelda ALTTP is https://smashcustommusic.net/game/95 ==> game ID is 95
 
 To get the song id from smashcustommusic.net, take the number at the end of the URL of a song.  
-For example, the URL for Zelda ALTTP Hyrule Castle is https://smashcustommusic.net/song/11816 so the song ID is 11816,
+For example, the URL for Zelda ALTTP Castle Theme is https://smashcustommusic.net/song/11816 ==> song ID is 11816
 
 You can also run the Python script with the command line by using:  
 `python name_of_python_script.py` param1 param2 param3  
