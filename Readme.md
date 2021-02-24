@@ -28,11 +28,11 @@ You need to have Python 3 installed with the following libraries:
 |_ Readme.md  
 
 Folder details:
-* output_pcm: default folder where output .pcm will be stored. Will be automatically created.
+* output_pcm: default folder where output .pcm will be stored. Will be automatically created
 * src:
   * msupcm.exe is used here to normalize the level of a pcm file
   * wav2msu.exe is used here to convert a wav file to a pcm file
-* temp: temporary folder where downloaded wav and generated pcm will be stored. Will be automatically created.
+* temp: temporary folder where downloaded wav and generated pcm will be stored. Will be automatically created
 
 It is also important to have the config and all python files at the root of the project or it won't work!
 
@@ -50,7 +50,7 @@ To get the song id from smashcustommusic.net, take the number at the end of the 
 For example: Zelda ALTTP Castle Theme URL is https://smashcustommusic.net/song/11816 ==> song ID is 11816
 
 You can also run the Python script with the command line by using:  
-`python name_of_python_script.py` param1 param2 param3  
+`python name_of_python_script.py param1 param2 param3`  
 But by doing this, you have to enter the parameters in the right order.
 
 
