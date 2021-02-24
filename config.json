@@ -1,0 +1,8 @@
+{
+    "output_path":"output_pcm/",
+    "default_normalization_level":-21,
+    "stop_words": ["remix", "arrangement", "backwards", "acapella", "remaster"],
+    "temp_folder":"temp",
+    "delete_valid_wav_after_pcm_generated":true    
+    
+}
