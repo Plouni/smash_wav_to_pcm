@@ -44,10 +44,10 @@ The easiest way is to simply click the Python scripts. They all have different u
 * generate_pcm_from_wav.py: asks for a wav file (or folder) and will transform it to a 16bit 44.1KHz wav, convert it to a pcm and then normalize it
 
 To get the game id from smashcustommusic.net, take the number at the end of the URL of a game.  
-For example, for Zelda ALTTP, the game ID is 95, here is the URL: https://smashcustommusic.net/game/95
+For example, the URL for Zelda ALTTP is https://smashcustommusic.net/game/95 so the game ID is 95
 
 To get the song id from smashcustommusic.net, take the number at the end of the URL of a song.  
-For example, for Zelda ALTTP Hyrule Castle, the song ID is 11816, here is the URL: https://smashcustommusic.net/song/11816
+For example, the URL for Zelda ALTTP Hyrule Castle is https://smashcustommusic.net/song/11816 so the song ID is 11816,
 
 You can also run the Python script with the command line by using:  
 `python name_of_python_script.py` param1 param2 param3  
@@ -60,7 +60,6 @@ Here are the settings you can customize in the config file:
 * default_normalization_level: normalization level that will be used by msupcm.exe. Default: -21
 * stop_words: list of "stop words". Any song that contains any of the "stop words" won't be downloaded (if you want to exclude remixes for example)
 * temp_folder: path to temp folder
-* resources_folder: path to resource folder
 * delete_valid_wav_after_pcm_generated: if you want to delete 16bit 44.1KHz wav files after the pcm file has been generated. Default: True
 
 
