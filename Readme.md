@@ -1,7 +1,7 @@
 # smash_wav_to_pcm
 
 Generate pcm files from songs found in smashcustommusic.net  
-Why this website? Because it has looping points for almost every song! And with Python it's easy to download the song, retrieve the looping points and use it to generate a pcm file! 
+Why this website? Because it has looping points for almost every song. And with Python it's easy to download the song, retrieve the looping points and use it to generate a pcm file! 
 
 
 ## Requirements
@@ -11,7 +11,7 @@ You need to have Python 3 installed with the following libraries:
 * urllib
 * soundfile
 * numpy
-* librosa == 0.6.0 (it won't work with above versions!)
+* librosa == 0.6.0 (it won't work with above versions)
 
 
 ## Project structure
@@ -34,7 +34,7 @@ Folder details:
   * wav2msu.exe is used here to convert a wav file to a pcm file
 * temp: temporary folder where downloaded wav and generated pcm will be stored. Will be automatically created
 
-It is also important to have the config and all python files at the root of the project or it won't work!
+It is also important to have the config and all python files at the root of the project or it won't work.
 
 
 ## How to use
