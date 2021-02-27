@@ -52,7 +52,7 @@ By default, the script will only download the brstm files. If you want to conver
 ### Simple Usage
 The easiest way is to simply click the Python scripts. They all have different uses:
 * `download_from_id_song.py`: asks for a song id from smashcustommusic.net and will download the brstm file. (Can also convert it to a pcm file)
-* `download_song_from_id_game.py`: asks for a game id from smashcustommusic.net and will download all of the brstm files. (Can also convert them to a pcm file)
+* `download_song_from_id_game.py`: asks for a game id from smashcustommusic.net and will download all of the brstm files. (Can also convert them to pcm files)
 * `generate_pcm_from_wav.py`: asks for a wav file (or folder) and will transform it to a 16bit 44.1KHz wav, convert it to a pcm and then normalize it
 
 To get the game id from smashcustommusic.net, take the number at the end of the URL of a game.  
@@ -72,7 +72,7 @@ But by doing this, you have to enter the parameters in the right order. Here is 
 
 ## Config file
 Here are the settings you can customize in the config file:
-* `output_path`: path to output folder where pcm files will be stored
+* `output_path`: path to output folder where output files will be stored
 * `stop_words`: list of "stop words". Any song that contains any of the "stop words" won't be downloaded (if you want to exclude remixes for example)
 * `temp_folder`: path to temp
 * `tools_folder`: path to tools folder
@@ -80,7 +80,7 @@ Here are the settings you can customize in the config file:
 Use these only if you're not using `Looping Audio Converter` and prefer to handle the brstm to pcm conversion automatically with Python: 
 * `auto_convert_brstm_to_pcm`: set it to `false` if you are using `Looping Audio Converter`, `true` otherwise (you'll need the required librairies, check the Requirements section)
 * `default_normalization_level`: normalization level that will be used by `msupcm.exe`. Default: -21
-* `delete_valid_wav_after_pcm_generated`: if you want to delete 16bit 44.1KHz wav files after the pcm file has been generated. Default: `true`
+* `delete_valid_wav_after_pcm_generated`: if you want to delete the 16bit 44.1KHz wav file after the pcm file has been generated. Default: `true`
 
 
 ## Credits
