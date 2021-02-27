@@ -85,5 +85,5 @@ Use these only if you're not using `Looping Audio Converter` and prefer to handl
 
 ## Credits
 qwertymodo is the creator of `msupcm.exe`  
-jbaiter is the creator of `wav2msu.exe`
+jbaiter is the creator of `wav2msu.exe`  
 Thealexbarney is the creator of `VGAudioCli.exe`
