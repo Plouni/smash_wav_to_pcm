@@ -1,8 +1,11 @@
 {
-    "output_path":"output_pcm/",
-    "default_normalization_level":-21,
+    "output_path":"output/",
     "stop_words": ["remix", "arrangement", "backwards", "acapella", "remaster"],
-    "temp_folder":"temp",
+    "temp_folder":"temp/",
+    "tools_folder":"tools/",
+    
+    "auto_convert_brstm_to_pcm":false,
+    "default_normalization_level":-21,
     "delete_valid_wav_after_pcm_generated":true    
     
 }

@@ -3,9 +3,25 @@ from bs4 import BeautifulSoup
 import os
 import sys
 import urllib
-import generate_pcm_from_wav
+import json
+from lib.functions import system_command, get_folder_final_info
 
-output_path = generate_pcm_from_wav.output_path
+# Loading config variables
+with open('config.json') as f:
+    config = json.load(f)
+
+# Loading if we auto convert the brstm file to a pcm using vgaudio and the librosa library
+auto_convert_brstm_to_pcm_with_vgaudio_librosa = config["auto_convert_brstm_to_pcm"]
+
+# Loading parent output folder where .pcm will be stored
+output_path = config['output_path']
+
+# Loading tools folder where msupcm.exe and wav2msu.exe are stored
+tools_folder = config['tools_folder']
+
+current_path = os.getcwd().replace('\\', '/') + '/'
+# Loading temp folder where downloaded .pcm will be stored
+temp_folder = config['temp_folder']
 
 headers = {
     'Access-Control-Allow-Origin': '*',
@@ -18,25 +34,24 @@ headers = {
 url = "https://smashcustommusic.net/song/"
 
 
-def download_song(song_id, song_file):
+def download_song(song_id, name_song, path_folder, format='brstm'):
     """
     Download a song from smash website using its id
     
     :song_id: id of song in smash website
-    :song_file: name of song file after download
-    :return: path to output song
+    :name_song: name of song
+    :path_folder: path to downloaded file
+    :return: name of output song
     """
     
-    URL_down = "https://smashcustommusic.net/wav/" + str(song_id)
+    URL_down = "https://smashcustommusic.net/{}/{}".format(format, song_id)
 
-    current_path = generate_pcm_from_wav.current_path
-    folder_in = generate_pcm_from_wav.folder_in
-    
-    path_out = current_path + folder_in + '/' + song_file
+    song_file = '{}.{}'.format(name_song, format)
+    path_out = path_folder + song_file
 
     urllib.request.urlretrieve(URL_down, path_out)
     
-    return path_out
+    return song_file
     
     
 def get_metadata(id_song):
@@ -61,34 +76,46 @@ def get_metadata(id_song):
             data[cols[0]]= cols[1]
             
     return data
+    
+ 
+def brstm_to_wav(path_in, path_out, remove_brstm=True):
+    """
+    Convert brstm to 16 bit wav
+    
+    :path_in: path to downloaded .brstm
+    :path_out: path to output .wav
+    """
+    
+    system_command(tools_folder + 'VGAudioCli.exe "{}" "{}" -f pcm16'.format(path_in, path_out))
+    if remove_brstm:
+        os.remove(path_in)
 
 
 def main():
     print('# This script will download a .wav file from smashcustommusic.net and convert it to a .pcm file #\n')
 
     # If the script was runned directly without parameters
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         id_song = int(input('> Enter Song ID:\n'))
-        folder_end = input('> Enter Name of output folder (default: output):\n').replace(' ', '_')
-        if folder_end == "":
-            print("Using default folder: output")
-            folder_end = "output"
+        folder_end = input('> Enter Name of output folder:\n').replace(' ', '_')
             
     # If the script was runned directly with parameters sent by the command line interface
     else:
         id_song = int(sys.argv[1])
-        folder_end = sys.argv[2]
+        if len(sys.argv) > 2:
+            folder_end = sys.argv[2]
+        else:
+            folder_end = ""
         
-    smash_wav_to_pcm(id_song, folder_end)
+    smash_brstm_process(id_song, folder_end)
     
     input("Process complete! .pcm available in folder '{}'. Press enter to finish.\n".format(output_path + folder_end))
 
     
-def smash_wav_to_pcm(id_song, folder_end, verbose=True, stop_if_exists=False):
+def smash_brstm_process(id_song, folder_end, verbose=True, stop_if_exists=False):
     """
-    Convert input .wav to a valid 16-bit 44.1 KHz .wav
-    Then, from this valid .wav generate a .pcm and normalize it
-    Finally the normalized .pcm is saved in output folder
+    Download brstm from smashcustommusic
+    Convert brstm to pcm if auto_convert_brstm_to_pcm_with_vgaudio_librosa is true
     
     :id_song: id of song in smash website
     :folder_end: name of output folder
@@ -105,21 +132,34 @@ def smash_wav_to_pcm(id_song, folder_end, verbose=True, stop_if_exists=False):
 
     if verbose:
         print("Downloading", name_song)
-
-    song_file = "{}.wav".format(name_song)
+        
+    # Get path to output folder and prefix to output file
+    path_folder_final, prefix_file_final =  get_folder_final_info(output_path, folder_end)
     
-    # Path to output folder
-    path_final = generate_pcm_from_wav.output_path + folder_end + '/'
-    # Path to output .pcm
-    path_final_normalized = path_final + folder_end + '-' + name_song + '.pcm'
-    # If .pcm already exist and stop_if_exists is True, we stop the process
-    if stop_if_exists and os.path.exists(path_final_normalized):
-        return 0
+    # If we want to convert brstm to wav to pcm
+    if auto_convert_brstm_to_pcm_with_vgaudio_librosa:
+        # Path to output .pcm
+        path_file_final = path_folder_final + prefix_file_final + name_song + '.pcm'
+        
+        # If .pcm already exist and stop_if_exists is True, we stop the process
+        if stop_if_exists and os.path.exists(path_file_final):
+            return 0
+            
+        # Path to downloaded song
+        path_brstm_folder = current_path + temp_folder + '/'
 
-    path_out = download_song(id_song, song_file)
+        # Download .brstm song and retrieve name of brstm file (with extension)
+        brstm_file = download_song(id_song, name_song, path_brstm_folder, format='brstm')
+        
+        wav_file = name_song + '.wav'
+        # Convert brstm to .wav
+        brstm_to_wav(path_brstm_folder + brstm_file, path_brstm_folder + wav_file)
 
-    # Convert downloaded .wav to normalized .pcm
-    generate_pcm_from_wav.wav_to_normalized_pcm(folder_end, song_file, sample_rate, start_loop)
+        import generate_pcm_from_wav
+        # Convert downloaded .wav to normalized .pcm
+        generate_pcm_from_wav.wav_to_normalized_pcm(folder_end, wav_file, sample_rate, start_loop)
+    else:
+        download_song(id_song, name_song, path_folder_final, format='brstm')
     
     return 1
 

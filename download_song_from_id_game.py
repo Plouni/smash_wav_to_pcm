@@ -18,20 +18,20 @@ output_path = config['output_path']
 
 
 def main():
-    print('# This script will download all .wav files from a game in smashcustommusic.net and convert them to .pcm files #\n')
+    print('# This script will download all .brstm files from a game in smashcustommusic.net #\n')
 
     # If the script was runned directly without parameters
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         id_game = int(input('> Enter Game ID:\n'))
-        folder_end = input('> Enter Name of output folder (default: output):\n').replace(' ', '_')
-        if folder_end == "":
-            print("Using default folder: output")
-            folder_end = "output"
+        folder_end = input('> Enter Name of output folder:\n').replace(' ', '_')
             
     # If the script was runned directly with parameters sent by the command line interface
     else:
         id_game = int(sys.argv[1])
-        folder_end = sys.argv[2]
+        if len(sys.argv) > 2:
+            folder_end = sys.argv[2]
+        else:
+            folder_end = ""
 
     url = "https://smashcustommusic.net/game/"
     req = requests.get(url + str(id_game), download_from_id_song.headers)
@@ -52,7 +52,7 @@ def main():
 
         try:
             # Sending parameters to function that will download song. stop_if_exists is True to ensure we don't download a song twice
-            return_code = download_from_id_song.smash_wav_to_pcm(song_id, folder_end, verbose=False, stop_if_exists=True)
+            return_code = download_from_id_song.smash_brstm_process(song_id, folder_end, verbose=False, stop_if_exists=True)
             
             # Song has been successfully downloaded
             if return_code == 1:

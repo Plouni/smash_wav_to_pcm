@@ -5,6 +5,7 @@ import librosa
 import numpy as np  
 import wave
 import json
+from lib.functions import system_command, get_folder_final_info
 
 # Loading config variables
 with open('config.json') as f:
@@ -13,7 +14,7 @@ with open('config.json') as f:
 # Loading default normalisation level
 default_normalization_level = config['default_normalization_level']
 
-# Loading output path where .pcm will be stored
+# Loading parent output folder where .pcm will be stored
 output_path = config['output_path']
 
 # Loading temp folder where downloaded .pcm will be stored
@@ -22,8 +23,8 @@ temp_folder = config['temp_folder']
 # Loading if valid .wav should be deleted after being converted to .pcm 
 delete_valid_wav_after_pcm_generated = config['delete_valid_wav_after_pcm_generated']
 
-# Resource folder where msupcm.exe and wav2msu.exe are stored
-resources_folder = 'src/'
+# Loading tools folder where msupcm.exe and wav2msu.exe are stored
+tools_folder = config['tools_folder']
 
 current_path = os.getcwd().replace('\\', '/') + '/'
 # For now both folders use temp, can be used to make a difference between raw .wav and converted 
@@ -75,74 +76,63 @@ def wav_16bit(path_in, path_out):
     except e:
         os.remove(path_out)
         os.rename(path_in, path_out)
-        
-
-def system_command(command):
-    """
-    Run command. Replace '/' with '\\' for Windows
-    
-    :command: command to run
-    """
-    
-    if sys.platform.startswith('win'):
-        os.system(command.replace('/', '\\\\'))
-    else:
-        os.system(command)        
     
 
 # Lance depuis script qui telecharge from game ou song. lance la conversion de tout les .wav   
-def wav_to_normalized_pcm(folder_final, song_file, sampling_rate, start_loop):
+def wav_to_normalized_pcm(folder_final, wav_file, sampling_rate, start_loop):
     """
     Convert input .wav to a valid 16-bit 44.1 KHz .wav
     Then, from this valid .wav generate a .pcm and normalize it
     Finally the normalized .pcm is saved in output folder
     
     :folder_final: name of output folder
-    :song_file: name .wav file to convert (with extension)
+    :wav_file: name .wav file to convert (with extension)
     :sampling_rate: sampling rate of .wav None if no need to loop sound
     :start_loop: start_loop of .wav, uses the sampling rate from parameter sampling_rate
     """
       
-    # Path to output folder
-    path_final = output_path + folder_final + '/'
-    create_folder(path_final)
+    # Get path to output folder and prefix to output file
+    path_folder_final, prefix_file_final =  get_folder_final_info(output_path, folder_final)
+    create_folder(path_folder_final)
     
-    # Convert .wav to 16-bit-pcm 44.1 KHz
-    path_in = current_path + folder_in + '/' + song_file
-    path_out = current_path + folder_out + '/' + song_file
+    # Song name (without '.wav' at the end)
+    name = wav_file.split('.wav')[0]
+    
+    # Path to converted .wav
+    path_in = current_path + folder_in + wav_file
+    # Path to 16-bit-pcm 44.1 KHz .wav
+    path_out = current_path + folder_out + wav_file
+    # Convert wav to a valid wav
     convert_wav(path_in, path_out)
 
     # Path to valid .wav
-    valid_wav_path = current_path + folder_out + '/' + song_file
+    valid_wav_path = current_path + folder_out + wav_file
 
     # Run process wav2msu.exe in order to generate .pcm
     if sampling_rate is not None:
         # With looping
         start_loop = int(start_loop) * 44.1 / (float(sampling_rate)/ 1000)
 
-        system_command(resources_folder + 'wav2msu.exe "{}" -l {}'.format(valid_wav_path, int(start_loop)))
+        system_command(tools_folder + 'wav2msu.exe "{}" -l {}'.format(valid_wav_path, int(start_loop)))
     else:
         # Without looping
-        system_command(resources_folder + 'wav2msu.exe "{}"'.format(valid_wav_path))
+        system_command(tools_folder + 'wav2msu.exe "{}"'.format(valid_wav_path))
     
     # If we delete valid .wav
     if delete_valid_wav_after_pcm_generated:
-        os.remove(valid_wav_path)    
-    
-    # Song name (without '.wav' at the end)
-    name = song_file.split('.wav')[0]
+        os.remove(valid_wav_path)
 
     # Defining variables for normalization process
     file_output = '{}.pcm'.format(name)
-    path_in = current_path + folder_out + "/" + file_output
+    path_in = current_path + folder_out + file_output
     # Temp name for output .pcm
-    path_out_normalize = current_path + folder_out + "/out" + file_output
+    path_out_normalize = current_path + folder_out + "out" + file_output
     
     # Run msupcm.exe to normalize .pcm
-    system_command(resources_folder + 'msupcm.exe -i "{}" -o "{}" -n {}'.format(path_in, path_out_normalize, default_normalization_level))
+    system_command(tools_folder + 'msupcm.exe -i "{}" -o "{}" -n {}'.format(path_in, path_out_normalize, default_normalization_level))
     
     # Path to output .pcm
-    path_final_normalized = path_final + folder_final + '-' + name + '.pcm'
+    path_final_normalized = path_folder_final + prefix_file_final + '-' + name + '.pcm'
     
     # Remove input .pcm
     os.remove(path_in)
@@ -164,10 +154,7 @@ def main():
     # If the script was runned directly without parameters
     if len(sys.argv) < 2:
     
-        folder_end = input('> Enter Name of output folder (default: output):\n').replace(' ', '_')
-        if folder_end == "":
-            print("Using default folder: output")
-            folder_end = "output"
+        folder_end = input('> Enter Name of output folder:\n').replace(' ', '_')
             
         sampling_rate = input("> Enter sampling rate in KHz or press Enter if you don't want to loop song:\n")
         if sampling_rate != "":
