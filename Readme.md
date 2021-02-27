@@ -1,6 +1,6 @@
 # smash_wav_to_pcm
 
-Download brstm files from smashcustommusic.net that you can use to create a MSU pack with.  
+Download brstm files from https://smashcustommusic.net that you can use to create a MSU pack with.  
 Why this website? Because it has looping points for most of the songs! So you can either use `Looping Audio Converter` (https://github.com/libertyernie/LoopingAudioConverter) to convert these brstm files to looped pcm files or you can just let some Python libraries handle this conversion automatically.  
 
 
@@ -18,11 +18,11 @@ And if you are not using Looping Audio Converter you'll also need these:
 
 ## Project structure
 .  
-|_ lib/
+|_ lib/  
   |_ __init__.py  
   |_ functions.py   
 |_ output_pcm/  
-|_ tools/
+|_ tools/  
   |_ msupcm.exe  
   |_ wav2msu.exe  
   |_ VGAudioCli.exe  
@@ -76,7 +76,7 @@ Here are the settings you can customize in the config file:
 * `temp_folder`: path to temp
 * `tools_folder`: path to tools folder
 
-Use these only if you're not using Looping Audio Converter and prefer to handle the brstm to pcm MSU-1 automatically with Python: 
+Use these only if you're not using Looping Audio Converter and prefer to handle the brstm to pcm conversion automatically with Python: 
 * `auto_convert_brstm_to_pcm`: set it to `false` if you are using `Looping Audio Converter`, `true` otherwise (you'll need the required librairies, check the `Requirements` section)
 * `default_normalization_level`: normalization level that will be used by `msupcm.exe`. Default: -21
 * `delete_valid_wav_after_pcm_generated`: if you want to delete 16bit 44.1KHz wav files after the pcm file has been generated. Default: `true`
