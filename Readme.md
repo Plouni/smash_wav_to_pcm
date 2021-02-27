@@ -67,7 +67,7 @@ You can also run the Python script with the command line by using:
 But by doing this, you have to enter the parameters in the right order. Here is the order for each script:
 * `download_from_id_song.py`: song id, output folder (optional, root of output_folder defined in config file by default)
 * `download_song_from_id_game.py`: game id, output folder (optional, root of output_folder defined in config file by default)
-* `generate_pcm_from_wav.py`: output folder, sampling rate (optional, if multiple songs, it will be used for all of them), start looping point (optional, requires sampling rate. If multiple songs, it will be used for all of them)
+* `generate_pcm_from_wav.py`: output folder, sampling rate (optional), start looping point (optional).
 
 
 ## Config file
@@ -78,7 +78,7 @@ Here are the settings you can customize in the config file:
 * `tools_folder`: path to tools folder
 
 Use these only if you're not using `Looping Audio Converter` and prefer to handle the brstm to pcm conversion automatically with Python: 
-* `auto_convert_brstm_to_pcm`: set it to `false` if you are using `Looping Audio Converter`, `true` otherwise (you'll need the required librairies, check the `Requirements` section)
+* `auto_convert_brstm_to_pcm`: set it to `false` if you are using `Looping Audio Converter`, `true` otherwise (you'll need the required librairies, check the Requirements section)
 * `default_normalization_level`: normalization level that will be used by `msupcm.exe`. Default: -21
 * `delete_valid_wav_after_pcm_generated`: if you want to delete 16bit 44.1KHz wav files after the pcm file has been generated. Default: `true`
 
