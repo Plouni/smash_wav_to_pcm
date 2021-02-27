@@ -47,7 +47,7 @@ It is also important to have the config and all python files at the root of the 
 
 
 ## How to use
-By default, the script will only download the brstm files. If you want to convert automatically the brstm to wav without using `Looping Audio Converter`, you'll have to check the config file to set `auto_convert_brstm_to_pcm` to `true`.  
+By default, the script will only download the brstm files. If you want to convert automatically the brstm to wav without using `Looping Audio Converter`, you have to set `auto_convert_brstm_to_pcm` to `true` in the config file.  
 
 ### Simple Usage
 The easiest way is to simply click the Python scripts. They all have different uses:
@@ -65,9 +65,9 @@ For example: `Zelda ALTTP Castle Theme` URL is https://smashcustommusic.net/song
 You can also run the Python script with the command line by using:  
 `python name_of_python_script.py param1 param2 param3`  
 But by doing this, you have to enter the parameters in the right order. Here is the order for each script:
-* `download_from_id_song.py`: song id from `smashcustommusic.net`, output folder (`optional`, root of output_folder defined in config file by default)
-* `download_song_from_id_game.py`: game id from `smashcustommusic.net`, output folder (`optional`, root of output_folder defined in config file by default)
-* `generate_pcm_from_wav.py`: output folder, sampling rate (`optional`, if multiple songs, will be used for all of them), start looping point (optional, requires sampling rate. If multiple songs, will be used for all of them)
+* `download_from_id_song.py`: song id, output folder (optional, root of output_folder defined in config file by default)
+* `download_song_from_id_game.py`: game id, output folder (optional, root of output_folder defined in config file by default)
+* `generate_pcm_from_wav.py`: output folder, sampling rate (optional, if multiple songs, it will be used for all of them), start looping point (optional, requires sampling rate. If multiple songs, it will be used for all of them)
 
 
 ## Config file
