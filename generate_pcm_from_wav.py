@@ -132,7 +132,7 @@ def wav_to_normalized_pcm(folder_final, wav_file, sampling_rate, start_loop):
     system_command(tools_folder + 'msupcm.exe -i "{}" -o "{}" -n {}'.format(path_in, path_out_normalize, default_normalization_level))
     
     # Path to output .pcm
-    path_final_normalized = path_folder_final + prefix_file_final + '-' + name + '.pcm'
+    path_final_normalized = path_folder_final + prefix_file_final + name + '.pcm'
     
     # Remove input .pcm
     os.remove(path_in)
@@ -179,10 +179,14 @@ def main():
     # List of .wav inside temp folder
     wav_files = [wav for wav in os.listdir(temp_folder) if ".wav" in wav]
 
-    for wav in wav_files:
-        wav_to_normalized_pcm(folder_end, wav, sampling_rate, start_loop)
-        
-    input("Process complete! .pcm available in folder '{}'. Press enter to finish.\n".format(output_path + folder_end))
+    if len(wav_files) == 0:
+        input("No .wav files found inside folder {}. Press enter to finish.\n".format(temp_folder))
+
+    else:
+        for wav in wav_files:
+            wav_to_normalized_pcm(folder_end, wav, sampling_rate, start_loop)
+            
+        input("Process complete! .pcm available in folder '{}'. Press enter to finish.\n".format(output_path + folder_end))
 
 
 if __name__ == "__main__":
