@@ -156,7 +156,7 @@ def main():
     
         folder_end = input('> Enter Name of output folder:\n').replace(' ', '_')
             
-        sampling_rate = input("> Enter sampling rate in KHz or press Enter if you don't want to loop song:\n")
+        sampling_rate = input("> Enter sampling rate in Hz or press Enter if you don't want to loop song:\n")
         if sampling_rate != "":
             sampling_rate = float(sampling_rate)
         
