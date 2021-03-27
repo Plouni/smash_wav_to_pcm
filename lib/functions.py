@@ -24,4 +24,7 @@ def get_folder_final_info(output_path, folder_final):
     """
     if len(folder_final)==0:
         return output_path, folder_final
+     
+    if  not os.path.exists(output_path + folder_final) or not os.path.isdir(output_path + folder_final):
+        os.mkdir(output_path + folder_final)
     return output_path + folder_final + '/', folder_final + '-'

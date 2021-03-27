@@ -4,7 +4,7 @@
     "temp_folder":"temp/",
     "tools_folder":"tools/",
     
-    "auto_convert_brstm_to_pcm":false,
+    "auto_convert_brstm_to_pcm":true,
     "default_normalization_level":-21,
     "delete_valid_wav_after_pcm_generated":true    
     
