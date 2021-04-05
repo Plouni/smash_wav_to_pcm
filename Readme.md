@@ -25,7 +25,7 @@ To convert wav to pcm files, this project uses :
   |_ `msupcm.exe`  
   |_ `VGAudioCli.exe`  
   |_ `wav_44100.xml`  
-  |_ `wav_to_pcm.xml`
+  |_ `wav_to_pcm.xml`  
 |_ temp/  
 |_ `config.json`  
 |_ `download_from_id_song.py`  
@@ -72,7 +72,7 @@ But by doing this, you have to enter the parameters in the right order. Here is 
 
 ## Config file
 Here are the settings you can customize in the config file:
-* `looping_audio_converter_path`: path to where your Looping Audio Converter is located on your PC. You must fill this or the program won't work
+* `looping_audio_converter_path`: path to where your Looping Audio Converter is located on your PC. **You must fill this or the program won't automatically convert brstm to pcm files**
 
 * `output_path`: path to output folder where output files will be stored
 * `stop_words`: list of "stop words". Any song that contains any of the "stop words" won't be downloaded (if you want to exclude remixes for example)
@@ -84,5 +84,5 @@ Here are the settings you can customize in the config file:
 
 
 ## Credits
-qwertymodo is the creator of `msupcm.exe`
+qwertymodo is the creator of `msupcm.exe`  
 Thealexbarney is the creator of `VGAudioCli.exe`
