@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<Options xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <OutputDir>.</OutputDir>
+  <Channels xsi:nil="true" />
+  <SampleRate>44100</SampleRate>
+  <AmplifydB xsi:nil="true" />
+  <AmplifyRatio xsi:nil="true" />
+  <PitchSemitones xsi:nil="true" />
+  <TempoRatio xsi:nil="true" />
+  <ChannelSplit>OneFile</ChannelSplit>
+  <ExporterType>MSU1</ExporterType>
+  <MP3EncodingParameters />
+  <AACEncodingParameters />
+  <OggVorbisEncodingParameters />
+  <AdxOptions>
+    <TrimFile>true</TrimFile>
+    <Version>4</Version>
+    <FrameSize>18</FrameSize>
+    <Filter>2</Filter>
+    <Type>Linear</Type>
+    <EncryptionType>None</EncryptionType>
+    <KeyCode xsi:nil="true" />
+  </AdxOptions>
+  <HcaOptions>
+    <TrimFile>true</TrimFile>
+    <Quality>NotSet</Quality>
+    <LimitBitrate>false</LimitBitrate>
+    <Bitrate>0</Bitrate>
+    <KeyCode xsi:nil="true" />
+  </HcaOptions>
+  <BxstmOptions>
+    <TrimFile>true</TrimFile>
+    <RecalculateSeekTable>true</RecalculateSeekTable>
+    <RecalculateLoopContext>true</RecalculateLoopContext>
+    <SamplesPerInterleave>14336</SamplesPerInterleave>
+    <SamplesPerSeekTableEntry>14336</SamplesPerSeekTableEntry>
+    <LoopPointAlignment>14336</LoopPointAlignment>
+    <Codec>GcAdpcm</Codec>
+    <Endianness xsi:nil="true" />
+    <Version>
+      <UseDefault>true</UseDefault>
+      <Major>0</Major>
+      <Minor>0</Minor>
+      <Micro>0</Micro>
+      <Revision>0</Revision>
+    </Version>
+    <TrackType>Standard</TrackType>
+    <SeekTableType>Standard</SeekTableType>
+  </BxstmOptions>
+  <UnknownLoopBehavior>ForceLoop</UnknownLoopBehavior>
+  <ExportWholeSong>true</ExportWholeSong>
+  <WholeSongSuffix />
+  <NumberOfLoops>1</NumberOfLoops>
+  <FadeOutSec>0</FadeOutSec>
+  <WriteLoopingMetadata>true</WriteLoopingMetadata>
+  <ExportPreLoop>false</ExportPreLoop>
+  <PreLoopSuffix> (beginning)</PreLoopSuffix>
+  <ExportLoop>false</ExportLoop>
+  <LoopSuffix> (loop)</LoopSuffix>
+  <ShortCircuit>true</ShortCircuit>
+  <VGAudioDecoder>true</VGAudioDecoder>
+  <NumSimulTasks>4</NumSimulTasks>
+</Options>

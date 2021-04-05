@@ -4,14 +4,12 @@ import os
 import sys
 import urllib
 import json
+import generate_pcm_from_wav
 from lib.functions import system_command, get_folder_final_info
 
 # Loading config variables
 with open('config.json') as f:
     config = json.load(f)
-
-# Loading if we auto convert the brstm file to a pcm using vgaudio and the librosa library
-auto_convert_brstm_to_pcm_with_vgaudio_librosa = config["auto_convert_brstm_to_pcm"]
 
 # Loading parent output folder where .pcm will be stored
 output_path = config['output_path']
@@ -22,6 +20,9 @@ tools_folder = config['tools_folder']
 current_path = os.getcwd().replace('\\', '/') + '/'
 # Loading temp folder where downloaded .pcm will be stored
 temp_folder = config['temp_folder']
+
+# Loading folder for looping audio converter
+looping_audio_converter_path = config['looping_audio_converter_path']
 
 headers = {
     'Access-Control-Allow-Origin': '*',
@@ -126,8 +127,9 @@ def smash_brstm_process(id_song, folder_end, verbose=True, stop_if_exists=False)
 
     data = get_metadata(id_song)
             
-    sample_rate = data['Sampling Rate:']
+    # sample_rate = data['Sampling Rate:']
     start_loop = data['Start Loop Point:']
+    # end_loop = data['End Loop Point:']
     name_song = data['Song Name:'].replace(' ', '_').replace(':', '').replace('/', '').replace('/', '')
 
     if verbose:
@@ -136,32 +138,27 @@ def smash_brstm_process(id_song, folder_end, verbose=True, stop_if_exists=False)
     # Get path to output folder and prefix to output file
     path_folder_final, prefix_file_final =  get_folder_final_info(output_path, folder_end)
     
-    # If we want to convert brstm to wav to pcm
-    if auto_convert_brstm_to_pcm_with_vgaudio_librosa:
-        # Path to output .pcm
-        path_file_final = path_folder_final + prefix_file_final + name_song + '.pcm'
-        
-        # If .pcm already exist and stop_if_exists is True, we stop the process
-        if stop_if_exists and os.path.exists(path_file_final):
-            return 0
-            
-        # Path to downloaded song
-        path_brstm_folder = current_path + temp_folder + '/'
-
-        # Download .brstm song and retrieve name of brstm file (with extension)
-        brstm_file = download_song(id_song, name_song, path_brstm_folder, format='brstm')
-        
-        wav_file = name_song + '.wav'
-        # Convert brstm to .wav
-        brstm_to_wav(path_brstm_folder + brstm_file, path_brstm_folder + wav_file)
-
-        import generate_pcm_from_wav
-        # Convert downloaded .wav to normalized .pcm
-        generate_pcm_from_wav.wav_to_normalized_pcm(folder_end, wav_file, sample_rate, start_loop)
-    else:
-        download_song(id_song, name_song, path_folder_final, format='brstm')
+    # Path to downloaded song
+    path_brstm_folder = current_path + temp_folder + '/'
     
+    # Path to output .pcm
+    path_file_final = path_folder_final + prefix_file_final + name_song + '.pcm'
+    
+    # If .pcm already exist and stop_if_exists is True, we stop the process
+    if stop_if_exists and os.path.exists(path_file_final):
+        return 0
+
+    # Download .brstm song and retrieve name of brstm file (with extension)
+    brstm_file = download_song(id_song, name_song, path_brstm_folder, format='brstm')
+           
+    wav_file = name_song + '.wav'
+    # Convert brstm to .wav
+    brstm_to_wav(path_brstm_folder + brstm_file, looping_audio_converter_path + wav_file)
+    
+    generate_pcm_from_wav.wav_to_normalized_pcm(folder_end, wav_file, start_loop)
+          
     return 1
+    
 
     
 if __name__ == "__main__":

@@ -2,14 +2,14 @@ import os
 import sys
         
 
-def system_command(command):
+def system_command(command, debug=False):
     """
     Run command. Replace '/' with '\\' for Windows
     
     :command: command to run
     """
 
-    if sys.platform.startswith('win'):
+    if sys.platform.startswith('win') and not debug:
         # Set stdout to NUL so that it doesn't print on console
         os.system(command.replace('/', '\\\\') + ' > NUL')
     else:
