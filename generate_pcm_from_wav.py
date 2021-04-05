@@ -177,6 +177,11 @@ def main():
     print("# This script will convert all .wav files from folder '{}' to .pcm files #\n".format(temp_folder))
     
     debug = True
+    
+    if not os.path.exists(looping_audio_converter_path) or "LoopingAudioConverter.exe" not in os.listdir(looping_audio_converter_path):
+        input("Error because LoopingAudioConverter.exe not found! Please make sure 'looping_audio_converter_path' in the config file is correct!")
+        return 0
+    
 
     # If the script was runned directly without parameters
     if len(sys.argv) < 2:

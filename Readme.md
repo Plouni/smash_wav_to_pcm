@@ -1,8 +1,8 @@
 # smash_wav_to_pcm
 
-Download brstm files from https://smashcustommusic.net that you can use to create a MSU pack with.  
+Download brstm files from https://smashcustommusic.net that you can use to create an MSU pack with.  
 Why this website? Because it has looping points for most of the songs!  
-You also need to download the powerful tool `Looping Audio Converter` to convert the brstm files to looped pcm files. Don't worry though, you don't need to know how to use this tool, because the config files are given to you and the process is called automatically by python and the command line interface of Looping Audio Converter. 
+You also need to download the powerful tool `Looping Audio Converter` to convert the brstm files to looped pcm files. You don't need to know how to use this tool, because the config files are given to you and the process is called automatically by python and the command line interface of Looping Audio Converter. 
 
 
 ## Requirements
@@ -20,13 +20,12 @@ To convert wav to pcm files, this project uses :
 |_ lib/  
   |_ `__init__.py`  
   |_ `functions.py`   
-|_ output/ 
+|_ output/  
 |_ tools/  
   |_ `msupcm.exe`  
   |_ `VGAudioCli.exe`  
   |_ `wav_44100.xml`  
-  |_ `wav_to_pcm.xml`  
-  |_ `wav2msu.exe`  
+  |_ `wav_to_pcm.xml`
 |_ temp/  
 |_ `config.json`  
 |_ `download_from_id_song.py`  
@@ -73,7 +72,7 @@ But by doing this, you have to enter the parameters in the right order. Here is 
 
 ## Config file
 Here are the settings you can customize in the config file:
-* `looping_audio_converter_path`: path to where your Looping Audio Converter is located on your PC. You must fill this or thr program won't work
+* `looping_audio_converter_path`: path to where your Looping Audio Converter is located on your PC. You must fill this or the program won't work
 
 * `output_path`: path to output folder where output files will be stored
 * `stop_words`: list of "stop words". Any song that contains any of the "stop words" won't be downloaded (if you want to exclude remixes for example)
@@ -85,6 +84,5 @@ Here are the settings you can customize in the config file:
 
 
 ## Credits
-qwertymodo is the creator of `msupcm.exe`  
-jbaiter is the creator of `wav2msu.exe`  
+qwertymodo is the creator of `msupcm.exe`
 Thealexbarney is the creator of `VGAudioCli.exe`

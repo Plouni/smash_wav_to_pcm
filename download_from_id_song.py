@@ -148,14 +148,21 @@ def smash_brstm_process(id_song, folder_end, verbose=True, stop_if_exists=False)
     if stop_if_exists and os.path.exists(path_file_final):
         return 0
 
-    # Download .brstm song and retrieve name of brstm file (with extension)
-    brstm_file = download_song(id_song, name_song, path_brstm_folder, format='brstm')
-           
-    wav_file = name_song + '.wav'
-    # Convert brstm to .wav
-    brstm_to_wav(path_brstm_folder + brstm_file, looping_audio_converter_path + wav_file)
-    
-    generate_pcm_from_wav.wav_to_normalized_pcm(folder_end, wav_file, start_loop)
+    if os.path.exists(looping_audio_converter_path) and "LoopingAudioConverter.exe" in os.listdir(looping_audio_converter_path):
+        # Download .brstm song and retrieve name of brstm file (with extension)
+        brstm_file = download_song(id_song, name_song, path_brstm_folder, format='brstm')
+               
+        wav_file = name_song + '.wav'
+        # Convert brstm to .wav
+        brstm_to_wav(path_brstm_folder + brstm_file, looping_audio_converter_path + wav_file)
+        
+        generate_pcm_from_wav.wav_to_normalized_pcm(folder_end, wav_file, start_loop)
+        
+    else:
+        # Download .brstm song and retrieve name of brstm file (with extension)
+        download_song(id_song, name_song, path_folder_final, format='brstm')
+        
+        print("Could not generate pcm file because LoopingAudioConverter.exe not found! Please make sure 'looping_audio_converter_path' in the config file is correct!")
           
     return 1
     
