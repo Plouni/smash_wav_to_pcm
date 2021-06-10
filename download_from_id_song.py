@@ -6,6 +6,11 @@ import urllib
 import json
 import generate_pcm_from_wav
 from lib.functions import system_command, get_folder_final_info
+import socket
+
+import requests
+
+socket.setdefaulttimeout(120)
 
 # Loading config variables
 with open('config.json') as f:
@@ -50,8 +55,25 @@ def download_song(song_id, name_song, path_folder, format='brstm'):
     song_file = '{}.{}'.format(name_song, format)
     path_out = path_folder + song_file
 
-    urllib.request.urlretrieve(URL_down, path_out)
-    
+    headers = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+"Accept-Encoding": "gzip, deflate, br",
+"Accept-Language": "en-US,en;q=0.9,fr;q=0.8",
+"Connection": 'keep-alive',
+"Cookie": "theme=1",
+"Host": "smashcustommusic.net",
+"Referer": "https://smashcustommusic.net/song/" + str(song_id),
+"sec-ch-ua": '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"',
+"sec-ch-ua-mobile": "?0",
+"Sec-Fetch-Dest": "document",
+"Sec-Fetch-Mode": "navigate",
+"Sec-Fetch-Site": "same-origin",
+"Sec-Fetch-User": "?1",
+"Upgrade-Insecure-Requests": "1",
+"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36"}
+
+    r=requests.get(URL_down, headers=headers)
+    open(path_out, 'wb').write(r.content)
+        
     return song_file
     
     
@@ -93,7 +115,7 @@ def brstm_to_wav(path_in, path_out, remove_brstm=True):
 
 
 def main():
-    print('# This script will download a .wav file from smashcustommusic.net and convert it to a .pcm file #\n')
+    print('# This script will download a .brstm file from smashcustommusic.net and convert it to a .pcm file #\n')
 
     # If the script was runned directly without parameters
     if len(sys.argv) < 2:
