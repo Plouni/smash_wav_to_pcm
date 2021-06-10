@@ -1,5 +1,5 @@
 {
-    "looping_audio_converter_path":"C:/Users/Luc/Documents/Jeux/Randomizer/S3Z3/Looping/",
+    "looping_audio_converter_path":"ENTER_PATH_TO_LOOPING_AUDIO_CONVERTER_HERE",
         
     "output_path":"output/",
     "stop_words": ["remix", "arrangement", "backwards", "acapella", "remaster"],
