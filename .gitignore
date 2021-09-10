@@ -2,3 +2,5 @@ __pycache__
 temp
 output_pcm
 config_backup.json
+todo.txt
+tracks_template.json

@@ -15,6 +15,9 @@ default_normalization_level = config['default_normalization_level']
 # Loading parent output folder where .pcm will be stored
 output_path = config['output_path']
 
+# Name of track config file
+tracks_file = config['tracks_file']
+
 # Loading temp folder where downloaded .pcm will be stored
 temp_folder = config['temp_folder']
 
@@ -171,6 +174,16 @@ def wav_to_normalized_pcm(folder_final, wav_file, start_loop):
         print(e)
         os.remove(path_final_normalized)
         os.rename(path_in, path_final_normalized)
+        
+# Clean start loop
+def parse_start_loop(start_loop):
+    if start_loop != "" and start_loop != "json":
+        return float(start_loop)
+        
+    elif start_loop != "json":
+        return None
+        
+    return start_loop
 
 
 def main():
@@ -188,17 +201,15 @@ def main():
     
         folder_end = input('> Enter Name of output folder:\n').replace(' ', '_')
             
-        start_loop = input("> Enter original start loop or press Enter if you don't want to loop song:\n")
-        if start_loop != "":
-            start_loop = float(start_loop)
-        else:
-            start_loop=None
+        # Number of samples in smash website
+        start_loop = input("> Enter start loop: number of samples, 'json' (without quotes) if using a file or press Enter if no looping.\n")
+        start_loop = parse_start_loop(start_loop)
             
     # If the script was runned directly with parameters sent by the command line interface
     else:
         folder_end = sys.argv[1]
         if len(sys.argv) > 2:
-            start_loop = float(sys.argv[2])
+            parse_start_loop(start_loop)
         else:
             start_loop=None
 
@@ -209,11 +220,26 @@ def main():
         input("No .wav files found inside folder {}. Press enter to finish.\n".format(temp_folder))
 
     else:
+    
+        tracks=None
+        if tracks_file in os.listdir(temp_folder) and start_loop == 'json':
+            with open(temp_folder + tracks_file, 'r') as f:
+                tracks = json.load(f)
+
+    
         for wav in wav_files:
             if ' ' in wav:
                 wav_clean = wav.replace(' ', '_')
             else:
                 wav_clean = wav
+                
+            # Loads from json
+            if tracks is not None:
+                track_number = wav.split('-')[1].split('.')[0]
+                start_loop = tracks[track_number]["Start_loop"]
+                if len(start_loop) == 0:
+                    start_loop = None
+                
             os.rename(temp_folder + wav, looping_audio_converter_path + wav_clean)
                 
             wav_to_normalized_pcm(folder_end, wav_clean, start_loop)
