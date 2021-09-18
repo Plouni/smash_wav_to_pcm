@@ -52,7 +52,7 @@ def main():
 
         try:
             # Sending parameters to function that will download song. stop_if_exists is True to ensure we don't download a song twice
-            return_code = download_from_id_song.smash_brstm_process(song_id, folder_end, verbose=False, stop_if_exists=True)
+            return_code, _ = download_from_id_song.smash_brstm_process(song_id, folder_end, verbose=False, stop_if_exists=True)
             
             # Song has been successfully downloaded
             if return_code == 1:

@@ -22,6 +22,9 @@ output_path = config['output_path']
 # Loading tools folder where msupcm.exe and wav2msu.exe are stored
 tools_folder = config['tools_folder']
 
+# Loads name of list_tracks_file
+list_tracks_file = config['list_tracks_file']
+
 current_path = os.getcwd().replace('\\', '/') + '/'
 # Loading temp folder where downloaded .pcm will be stored
 temp_folder = config['temp_folder']
@@ -113,24 +116,65 @@ def brstm_to_wav(path_in, path_out, remove_brstm=True):
     if remove_brstm:
         os.remove(path_in)
 
+def parse_id_song_param(id_song):
+    """
+    Parse id_song param and returns as a list and check if using tracks or not
+    
+    :id_song: id_song param
+    """
+    
+    if "track" in id_song:
+        if list_tracks_file in os.listdir():
+            try:
+                with open(list_tracks_file, 'r') as f:
+                    tracks = json.load(f)
+                # Converting tracks to int if it's not the case
+                tracks_int = [int(track) for track in tracks]
+            except:
+                raise ValueError("Tracks file badly formatted. Make sutre it's a list of integers")
+            
+            return tracks, False, True
+            
+        else:
+            raise ValueError("No tracks file found!")
+    else:
+        return int(id_song)
+    
+
 
 def main():
     print('# This script will download a .brstm file from smashcustommusic.net and convert it to a .pcm file #\n')
 
     # If the script was runned directly without parameters
     if len(sys.argv) < 2:
-        id_song = int(input('> Enter Song ID:\n'))
+        id_song = input('> Enter Song ID or "tracks" (without quotes) if using a file:\n')
         folder_end = input('> Enter Name of output folder:\n').replace(' ', '_')
             
     # If the script was runned directly with parameters sent by the command line interface
     else:
-        id_song = int(sys.argv[1])
+        id_song = sys.argv[1]
         if len(sys.argv) > 2:
             folder_end = sys.argv[2]
         else:
             folder_end = ""
         
-    smash_brstm_process(id_song, folder_end)
+    list_of_song, verbose, stop_if_exists = parse_id_song_param(id_song)
+        
+    for i, id_song in enumerate(list_of_song):
+        try:
+            return_code, name_song = smash_brstm_process(id_song, folder_end, verbose=verbose, stop_if_exists=stop_if_exists)
+            
+            # Song has been successfully downloaded
+            if return_code == 1:
+                if len(list_of_song) > 0:
+                    print("Downloaded", name_song, "- Progress:", i+1, '/', len(list_of_song) )
+            # Song was skipped because already downloaded
+            else:
+                if len(list_of_song) > 0:
+                    print("Skipped", name_song, "- Progress:", i+1, '/', len(list_of_song) )
+            
+        except Exception as e:
+            print("ID:", id_song, "Name:", name_song, "Error:", e)
     
     input("Process complete! .pcm available in folder '{}'. Press enter to finish.\n".format(output_path + folder_end))
 
@@ -168,7 +212,7 @@ def smash_brstm_process(id_song, folder_end, verbose=True, stop_if_exists=False)
     
     # If .pcm already exist and stop_if_exists is True, we stop the process
     if stop_if_exists and os.path.exists(path_file_final):
-        return 0
+        return 0, name_song
 
     if os.path.exists(looping_audio_converter_path) and "LoopingAudioConverter.exe" in os.listdir(looping_audio_converter_path):
         # Download .brstm song and retrieve name of brstm file (with extension)
@@ -186,7 +230,7 @@ def smash_brstm_process(id_song, folder_end, verbose=True, stop_if_exists=False)
         
         print("Could not generate pcm file because LoopingAudioConverter.exe not found! Please make sure 'looping_audio_converter_path' in the config file is correct!")
           
-    return 1
+    return 1, name_song
     
 
     

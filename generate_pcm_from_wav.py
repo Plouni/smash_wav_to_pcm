@@ -202,7 +202,7 @@ def main():
         folder_end = input('> Enter Name of output folder:\n').replace(' ', '_')
             
         # Number of samples in smash website
-        start_loop = input("> Enter start loop: number of samples, 'json' (without quotes) if using a file or press Enter if no looping.\n")
+        start_loop = input("> Enter start loop point:\n - as a number of samples\n - 'json' (without quotes) if using a file inside {}\n - just press Enter if no looping.\n".format(temp_folder))
         start_loop = parse_start_loop(start_loop)
             
     # If the script was runned directly with parameters sent by the command line interface
