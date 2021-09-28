@@ -138,7 +138,7 @@ def parse_id_song_param(id_song):
         else:
             raise ValueError("No tracks file found!")
     else:
-        return int(id_song), True, False
+        return [int(id_song)], True, False
     
 
 
