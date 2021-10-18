@@ -3,6 +3,7 @@
         
     "output_path":"output/",
     "tracks_file":"tracks.json",
+    "list_tracks_file":"list_tracks.json",
     "stop_words": ["remix", "arrangement", "backwards", "acapella", "remaster"],
     "temp_folder":"temp/",
     "tools_folder":"tools/",

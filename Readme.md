@@ -69,6 +69,10 @@ But by doing this, you have to enter the parameters in the right order. Here is 
 * `download_song_from_id_game.py`: game id, output folder (optional, root of output_folder defined in config file by default)
 * `generate_pcm_from_wav.py`: output folder, start looping point (optional).
 
+### Advanced Usage
+There are more options you may find useful... :
+* `download_from_id_song.py`: Enter "tracks" (without quotes) and it will download all the song id inside the "list_tracks_file" file. This file is defined in the "list_tracks_file field" of the json config file.
+* `generate_pcm_from_wav.py`: Enter "json" (without quotes) if you want to use your own sample loop points. This will process the "tracks" file inside the temp folder. This file is defined in the "tracks_file field" of the json config file. 
 
 ## Config file
 Here are the settings you can customize in the config file:
@@ -77,6 +81,8 @@ Here are the settings you can customize in the config file:
 * `output_path`: path to output folder where output files will be stored
 * `stop_words`: list of "stop words". Any song that contains any of the "stop words" won't be downloaded (if you want to exclude remixes for example)
 * `temp_folder`: path to temp
+* `list_tracks_file`: list of song id you want to download
+* `tracks_file`: name of track config file. Can be used to define sample loop manually. Works only with wav files already trimmed at the end, the song name must have the following format too: name-NUMBER.wav
 * `tools_folder`: path to tools folder
 * `looping_config_wav_to_pcm`: path to config files for Looping Audio Converter
 * `default_normalization_level`: normalization level that will be used by `msupcm.exe`. Default: -21
